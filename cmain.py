@@ -22,8 +22,6 @@ def main(scr):
         if should_quit:
             break
 
-# TODO: implement quit
-
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.DEBUG)
     curses.wrapper(main)
