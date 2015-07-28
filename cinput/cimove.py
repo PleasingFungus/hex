@@ -1,7 +1,6 @@
 ''' Basic player input command functionality. '''
 
 from getch import getch
-from player_act import attempt_move
 from point import Point
 
 def move_comm(delta):
@@ -12,7 +11,7 @@ def move_comm(delta):
         function: A function that tries to move the player in the corresponding direction.
     '''
     def move(player, area):
-        attempt_move(player, delta, area)
+        player.attempt_move(delta, area)
         return False
     return move
 
