@@ -30,4 +30,4 @@ class Cell(object):
         return self.solid or self.actor
 
 CL_FLOOR = lambda: Cell('.', False)
-CL_WALL = lambda: Cell('▓', True)
+CL_WALL = lambda: Cell('#', True)
