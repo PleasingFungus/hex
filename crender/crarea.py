@@ -9,7 +9,7 @@ def stringify_row(row):
     Returns:
         str: A representation of the row; e.g. '...###.#  #...#'
     '''
-    return ''.join((cell.glyph if cell else ' ') for cell in row)
+    return ''.join((cell.cur_glyph() if cell else ' ') for cell in row)
 
 def render_area(area):
     ''' Render a given Area to the console.

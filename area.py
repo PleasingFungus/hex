@@ -49,6 +49,6 @@ class Area(object):
         cells = {}
         for x in range(dim):
             for y in range(dim):
-                cells[Point(x,y)] = choice([CL_FLOOR, CL_WALL])
+                cells[Point(x,y)] = choice([CL_FLOOR, CL_WALL])()
 
         return cells
