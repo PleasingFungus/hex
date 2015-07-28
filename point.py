@@ -1,5 +1,7 @@
 ''' Modelling basic geometry. '''
 
+# XXX: remove this, replace with int-tuples and functions applied on them
+
 class Point(object):
     '''A 2D point.
 
