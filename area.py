@@ -37,6 +37,18 @@ class Area(object):
 
         return rows
 
+    def find_actor(self, actor):
+        ''' Return the coordinates of the given actor in this area.
+        Args:
+            actor (Actor): The actor in question.
+        Returns:
+            Point: The location of the actor, or None if they're not found.
+        '''
+        for loc, cell in self.cells.items():
+            if cell.actor == actor:
+                return loc
+        return None
+
     @classmethod
     def gen_room(cls, dim):
         ''' Generate a completely random room of the given dimensions, starting from the origin.

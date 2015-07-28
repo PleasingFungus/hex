@@ -1,7 +1,5 @@
 ''' Modelling basic geometry. '''
 
-# XXX: remove this, replace with int-tuples and functions applied on them
-
 class Point(object):
     '''A 2D point.
 
@@ -22,3 +20,8 @@ class Point(object):
 
     def __hash__(self):
         return hash((self.x, self.y))
+
+# XXX: change this to just override add
+def add_points(a, b):
+    ''' Sum two points as vectors. '''
+    return Point(a.x + b.x, a.y + b.y)

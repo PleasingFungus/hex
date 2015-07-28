@@ -1,5 +1,7 @@
 ''' Modelling individual terrain cells. '''
 
+# TODO: move loc into actors instead, to preserve 1 loc per actor invariant
+
 class Cell(object):
     '''A terrain cell.
     
