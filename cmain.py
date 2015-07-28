@@ -10,20 +10,20 @@ from crender.crarea import render_area
 import curses
 from point import Point
 
-def main():
+def main(scr):
     ''' Run the game. '''
     area = Area(Area.gen_room(20))
     area.cells[Point(10, 10)] = CL_FLOOR()
     player = area.cells[Point(10, 10)].actor = Actor()
 
-    scr = curses.initscr()
-
     while True:
         render_area(area, scr)
-        go(player, area)
+        should_quit = go(player, area)
+        if should_quit:
+            break
 
 # TODO: implement quit
 
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.DEBUG)
-    curses.wrapper(main())
+    curses.wrapper(main)
