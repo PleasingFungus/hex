@@ -29,11 +29,10 @@ class Area(object):
         for point, cell in self.cells.items():
             while len(rows) <= point.y:
                 rows.append([])
-
             row = rows[point.y]
-            while len(rows) <= point.x:
-                row.append(None)
 
+            while len(row) <= point.x:
+                row.append(None)
             row[point.x] = cell
 
         return rows
