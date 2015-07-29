@@ -49,5 +49,5 @@ class Stairs(Cell):
         self.is_stairs = True
 
 CL_FLOOR = lambda: Cell(False, '.')
-CL_WALL = lambda: Cell(True, '#')
+CL_WALL = lambda: Cell(True, '∎')
 CL_STAIR = Stairs
