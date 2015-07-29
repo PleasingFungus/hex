@@ -12,6 +12,7 @@ def a_star_search(cells, start, goal):
         goal (Point): The intended destination of the search.
     Returns:
         An ordered list of points to travel to reach the goal.
+        Includes the goal, but does not include the start.
     '''
     frontier = PriorityQueue()
     frontier.put(start, 0)
@@ -44,6 +45,6 @@ def a_star_search(cells, start, goal):
         return None
 
     path = [goal]
-    while path[-1] != start:
+    while came_from[path[-1]] != start:
         path.append(came_from[path[-1]])
-    return path
+    return list(reversed(path))

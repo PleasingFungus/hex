@@ -1,6 +1,7 @@
 ''' a simple melee enemy. '''
 
 from actor import Actor
+from astar import a_star_search
 from crender.colors import RUST
 
 class Mongoose(Actor):
@@ -17,10 +18,23 @@ class Mongoose(Actor):
         cur_loc = area.find_actor(self)
         assert cur_loc != None
 
-        for loc,cell in area.cells.items():
-            if not loc.adjacent(cur_loc):
-                continue
+        for actor in area.all_actors():
+            if actor.is_player:
+                player = actor
+        assert player
 
-            if cell.actor and cell.actor.is_player:
-                cell.actor.be_hit(self)
-                break
+        player_loc = area.find_actor(player)
+        assert player_loc != None
+
+        # attempt to hit the player
+        if player_loc.adjacent(cur_loc):
+            player.be_hit(self)
+            return
+
+        # attempt to move toward the player
+        path = a_star_search(area.cells, cur_loc, player_loc)
+        if path:
+            self.attempt_move(path[0] - cur_loc, area)
+            return
+
+        # XXX: just move directly toward the player
