@@ -4,14 +4,12 @@ import logging
 
 from cinput.cimove import go
 from crender.crarea import render_area
-from crender.colors import init_colors
 import curses
 from snake import run_game
 
 def main(scr):
     ''' Run the game. '''
     curses.curs_set(0)
-    init_colors()
 
     renderer = lambda area: render_area(area, scr)
     io = lambda player,area: go(scr.getkey(), player, area)

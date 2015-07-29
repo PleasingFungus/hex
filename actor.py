@@ -6,9 +6,9 @@ class Actor(object):
     ''' An entity that occupies a Cell.
         Attributes:
             glyph (str): The glyph used to represent the actor in console; e.g. '@'.
-            color (int): The color pair used for the console glyph; defaults to 0 (white).
+            color (Color): The color pair used for the console glyph; defaults to white.
     '''
-    def __init__(self, glyph, color=crender.colors.COL_WHITE):
+    def __init__(self, glyph, color=crender.colors.WHITE):
         self.glyph = glyph
         self.color = color
 
