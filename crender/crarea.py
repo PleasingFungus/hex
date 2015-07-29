@@ -1,7 +1,5 @@
 ''' Functions for rendering an area to the console.'''
 
-from curses import color_pair
-
 def render_area(area, scr):
     ''' Render a given Area to the console.
     
