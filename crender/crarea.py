@@ -12,6 +12,16 @@ def render_area(area, scr):
         scr.addstr(loc.y, loc.x, cell.cur_glyph().encode('utf-8'), cell.cur_color().attribute_code())
     scr.refresh()
 
+def debug_astar(area, scr):
+    player = [actor for actor in area.all_actors() if actor.is_player][0]
+    mongoose = [actor for actor in area.all_actors() if actor.glyph == 'o'][0]
+    mongoose_loc = area.find_actor(mongoose)
+    player_loc = area.find_actor(player)
+    from astar import a_star_search
+    path = a_star_search(area.cells, mongoose_loc, player_loc) or []
+    for p in path:
+        scr.addstr(p.y, p.x, '*'.encode('utf-8'))
+
 def render_sidebar(player, area, scr):
     ''' Render a given Player & Area's metadata to the console.
 

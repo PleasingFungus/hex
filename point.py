@@ -26,7 +26,7 @@ class Point(object):
         return Point(a.x + b.x, a.y + b.y)
 
     def __neg__(self):
-        ''' Negate a point as a vector (flip across the origin '''
+        ''' Negate a point as a vector (flip across the origin) '''
         return Point(-self.x, -self.y)
 
     def __sub__(a, b):
@@ -35,6 +35,9 @@ class Point(object):
 
     def __repr__(self):
         return "<Point({},{})>".format(self.x, self.y)
+
+    def __lt__(self, other):
+        return (self.x, self.y) < (other.x, other.y)
 
     def adjacent(self, other):
         ''' Is this point adjacent to the other point in the current metric?
