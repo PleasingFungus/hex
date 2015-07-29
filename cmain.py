@@ -18,7 +18,8 @@ def main(scr):
 
     main_render = lambda area: render_area(area, main_window)
     sidebar_render = lambda player,area: render_sidebar(player, area, sidebar_window)
-    # FIXME: this displays black until prompted for input (???)
+    # FIXME: this displays black until the player provides input (???)
+        # only true if querying 'scr'; however, querying others doesn't get arrow presses
     io = lambda player,area: go(scr.getkey(), player, area)
     run_game(main_render, sidebar_render, io)
 
