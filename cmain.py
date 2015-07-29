@@ -2,19 +2,19 @@
 
 import logging
 
-from actor import Actor
 from area import Area
 from cell import CL_FLOOR
 from cinput.cimove import go
 from crender.crarea import render_area
 import curses
+from player import Player
 from point import Point
 
 def main(scr):
     ''' Run the game. '''
     area = Area(Area.gen_room(20))
     area.cells[Point(10, 10)] = CL_FLOOR()
-    player = area.cells[Point(10, 10)].actor = Actor()
+    player = area.cells[Point(10, 10)].actor = Player()
     curses.curs_set(0)
 
     while True:

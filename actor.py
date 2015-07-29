@@ -2,16 +2,18 @@
 
 class Actor(object):
     ''' An entity that occupies a Cell.
+        Attributes:
+            glyph (str): The glyph used to represent the actor in console; e.g. '@'.
     '''
-    def __init__(self):
-        pass
+    def __init__(self, glyph):
+        self.glyph = glyph
 
     def cur_glyph(self):
         ''' What glyph should currently be used to represent this actor in the console?
         Returns:
             The correct glyph for the actor; e.g. '@'.
         '''
-        return '@'
+        return self.glyph
 
     def attempt_move(self, delta, area):
         ''' Attempt to move the actor the given delta from their current position in the current area.
