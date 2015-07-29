@@ -9,10 +9,12 @@ class Area(object):
     
     Attributes:
         cells (dict<Point, Cell>): A map of Points to Cells comprising the Area.
+        depth (int): The level number, starting from 1 and incrementing each time the player descends.
     '''
 
-    def __init__(self, cells):
+    def __init__(self, cells, depth=1):
         self.cells = cells
+        self.depth = depth
 
     def get_rows(self):
         ''' Build an ordering of the cells in the area.

@@ -45,6 +45,7 @@ def check_stairs(player, area):
         return
 
     # on the stairs; new level.
+    area.depth += 1
     area.cells = Area.gen_room(level_dim)
     assert loc in area.cells
     area.cells[loc] = CL_FLOOR()
