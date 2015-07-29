@@ -35,3 +35,17 @@ class Point(object):
 
     def __repr__(self):
         return "<Point({},{})>".format(self.x, self.y)
+
+    def adjacent(self, other):
+        ''' Is this point adjacent to the other point in the current metric?
+        Would need to be changed in a hex or 8-direction metric.
+
+        Args:
+            other (Point): The point to be checked for adjacency.
+        Returns:
+            bool: Whether the other point is directly adjacent to this one.
+                  A point is not considered adjacent to itself.
+        '''
+
+        return (other.x == self.x and abs(other.y - self.y) == 1
+             or other.y == self.y and abs(other.x - self.x) == 1)

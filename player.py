@@ -11,7 +11,15 @@ class Player(Actor):
 
     def __init__(self):
         super().__init__('@', crender.colors.EMERALD)
+        self.is_player = True
         self.alive = True
+
+    def be_hit(self, other):
+        ''' Be brutally battered.
+        Args:
+            other (Actor): The entity doing the damage.
+        '''
+        self.die()
 
     def die(self):
         ''' Be no longer alive. '''

@@ -7,10 +7,12 @@ class Actor(object):
         Attributes:
             glyph (str): The glyph used to represent the actor in console; e.g. '@'.
             color (Color): The color pair used for the console glyph; defaults to white.
+            is_player (bool): Whether the actor is the player.
     '''
     def __init__(self, glyph, color=crender.colors.WHITE):
         self.glyph = glyph
         self.color = color
+        self.is_player = False
 
     def cur_glyph(self):
         ''' What glyph should currently be used to represent this actor in the console?
@@ -25,6 +27,13 @@ class Actor(object):
             int: The correct color pair for the actor; e.g. 0 (white).
         '''
         return self.color
+
+    def act(self, area):
+        ''' Take a turn.
+        args:
+            area (Area): The area the actor is in.
+        '''
+        pass
 
     def attempt_move(self, delta, area):
         ''' Attempt to move the actor the given delta from their current position in the current area.

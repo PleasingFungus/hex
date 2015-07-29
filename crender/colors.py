@@ -46,5 +46,7 @@ BROWN = Color(False, curses.COLOR_YELLOW)
 YELLOW = Color(True, curses.COLOR_YELLOW)
 FOREST = Color(False, curses.COLOR_GREEN)
 EMERALD = Color(True, curses.COLOR_GREEN)
+RUST = Color(False, curses.COLOR_RED)
+RED = Color(True, curses.COLOR_RED)
 
 mapped_pairs[(WHITE.fg, WHITE.bg)] = 0 # predefined

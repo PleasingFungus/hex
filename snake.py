@@ -2,6 +2,7 @@
 
 from area import Area
 from cell import CL_FLOOR, CL_STAIR
+from mongoose import Mongoose
 from player import Player
 from point import Point
 
@@ -21,6 +22,8 @@ def run_game(main_render, sidebar_render, io):
     area.cells[midpoint] = CL_FLOOR()
     player = area.cells[midpoint].actor = Player()
 
+    area.cells[midpoint + Point(2, -1)].actor = Mongoose()
+
     while True:
         main_render(area)
         sidebar_render(player, area)
@@ -29,6 +32,8 @@ def run_game(main_render, sidebar_render, io):
             break
 
         check_stairs(player, area)
+        for actor in area.all_actors():
+            actor.act(area)
 
 def check_stairs(player, area):
     ''' Check if the player is on the stairs.

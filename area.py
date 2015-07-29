@@ -51,6 +51,13 @@ class Area(object):
                 return loc
         return None
 
+    def all_actors(self):
+        ''' Find all actors currently within the area.
+        Returns:
+            list<Actor>: A list of actors in the cells of the area. Order semirandom and not guaranteed consistent between calls.
+        '''
+        return [cell.actor for cell in self.cells.values() if cell.actor]
+
     @classmethod
     def gen_room(cls, dim):
         ''' Generate a completely hollow room of the given dimensions, starting from the origin.
