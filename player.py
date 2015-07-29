@@ -16,6 +16,7 @@ class Player(Actor):
     def die(self):
         ''' Be no longer alive. '''
         self.alive = False
+        # XXX: would be good to clear the input buffer here, or in things that call this
 
     def attempt_move(self, delta, area):
         ''' Attempt to move in the given direction.
