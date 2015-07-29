@@ -1,7 +1,5 @@
 ''' Actor class & methods. '''
 
-from point import add_points
-
 class Actor(object):
     ''' An entity that occupies a Cell.
     '''
@@ -28,7 +26,7 @@ class Actor(object):
         cur_loc = area.find_actor(self)
         assert cur_loc != None
 
-        new_loc = add_points(cur_loc, delta)
+        new_loc = cur_loc + delta
         if new_loc not in area.cells: # OOB
             return False
 

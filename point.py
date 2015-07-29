@@ -21,7 +21,17 @@ class Point(object):
     def __hash__(self):
         return hash((self.x, self.y))
 
-# XXX: change this to just override add
-def add_points(a, b):
-    ''' Sum two points as vectors. '''
-    return Point(a.x + b.x, a.y + b.y)
+    def __add__(a, b):
+        ''' Sum two points as vectors. '''
+        return Point(a.x + b.x, a.y + b.y)
+
+    def __neg__(self):
+        ''' Negate a point as a vector (flip across the origin '''
+        return Point(-self.x, -self.y)
+
+    def __sub__(a, b):
+        ''' Subtract two points as vectors. '''
+        return Point(a.x - b.x, a.y - b.y)
+
+    def __repr__(self):
+        return "<Point({},{})>".format(self.x, self.y)
