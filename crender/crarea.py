@@ -9,6 +9,6 @@ def render_area(area, scr):
     '''
     scr.clear()
     for loc, cell in area.cells.items():
-        scr.addch(loc.y, loc.x, ord(cell.cur_glyph()))
+        scr.addch(loc.x, loc.y, ord(cell.cur_glyph()))
         # TODO: support extended ascii/unicode ^ 
     scr.refresh()
