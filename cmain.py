@@ -19,7 +19,8 @@ def main(scr):
 
     while True:
         render_area(area, scr)
-        should_quit = go(player, area)
+        command = scr.getkey()
+        should_quit = go(command, player, area)
         if should_quit:
             break
 
