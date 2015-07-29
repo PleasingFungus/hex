@@ -16,13 +16,11 @@ def main(scr):
     sidebar_window = curses.newwin(curses.LINES, sidebar_width, 0, 0)
     main_window = curses.newwin(curses.LINES, main_width, 0, sidebar_width) 
 
-    def render(area):
-        ''' Render info about the current area to the entire console. '''
-        render_area(area, main_window)
-        render_sidebar(area, sidebar_window)
-        # FIXME: this displays black until prompted for input (???)
+    main_render = lambda area: render_area(area, main_window)
+    sidebar_render = lambda player,area: render_sidebar(player, area, sidebar_window)
+    # FIXME: this displays black until prompted for input (???)
     io = lambda player,area: go(scr.getkey(), player, area)
-    run_game(render, io)
+    run_game(main_render, sidebar_render, io)
 
 
 if __name__ == '__main__':

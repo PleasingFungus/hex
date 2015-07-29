@@ -7,10 +7,11 @@ from point import Point
 
 level_dim = 19
 
-def run_game(render, io):
+def run_game(main_render, sidebar_render, io):
     ''' The main game loop.
         Params:
-            render (function<Area>): Render the current game state to the screen.
+            main_render (function<Area>): Render the current game state to the screen.
+            sidebar_render (function<Player, Area>): Render metadata to the sidebar.
             io (function<Player, Area>): Query the player for their next action.
     '''
     area = Area(Area.gen_room(level_dim))
@@ -21,7 +22,8 @@ def run_game(render, io):
     player = area.cells[midpoint].actor = Player()
 
     while True:
-        render(area)
+        main_render(area)
+        sidebar_render(player, area)
         should_quit = io(player, area)
         if should_quit:
             break

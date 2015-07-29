@@ -4,15 +4,26 @@ from actor import Actor
 import crender.colors
 
 class Player(Actor):
-    ''' The player character class. '''
+    ''' The player character class.
+    Attributes:
+        alive (bool): Whether the player is alive or is dead (in the process of dying).
+    '''
 
     def __init__(self):
         super().__init__('@', crender.colors.EMERALD)
+        self.alive = True
+
+    def die(self):
+        ''' Be no longer alive. '''
+        self.alive = False
 
     def attempt_move(self, delta, area):
         ''' Attempt to move in the given direction.
-            If successful, leave a trail behind.
-            Params: 
+        If successful, leave a trail behind.
+
+        Params:
+            delta (Point): The delta to move from the actor's current position.
+            area (Area): The area the actor is in.
         '''
 
         cur_loc = area.find_actor(self)

@@ -21,7 +21,7 @@ commands = {'y' : move_comm(0, -1), 'n' : move_comm(0, 1),
             'h' : move_comm(-1, 0), 'j' : move_comm(1, 0),
             'KEY_UP' : move_comm(0, -1), 'KEY_DOWN' : move_comm(0, 1),
             'KEY_LEFT' : move_comm(-1, 0), 'KEY_RIGHT' : move_comm(1, 0),
-            'q' : (lambda a,b: True) }
+            'q' : (lambda a,b: True), 'd' : (lambda player,_: player.die()) }
 
 def go(command, player, area):
     ''' Respond appropriately to player input.
@@ -31,6 +31,9 @@ def go(command, player, area):
         player (Actor): The character the player controls.
         area (Area): The area the character inhabits.
     '''
+    if not player.alive:
+        return True # quit without responding to input
+
     if command in commands:
         should_quit = commands[command](player, area)
         return should_quit
