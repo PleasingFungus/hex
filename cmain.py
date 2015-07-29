@@ -21,6 +21,7 @@ def main(scr):
     # FIXME: this displays black until the player provides input (???)
         # only true if querying 'scr'; however, querying others doesn't get arrow presses
     io = lambda player,area: go(scr.getkey(), player, area)
+    # FIXME: don't take time for invalid commands/moves
     run_game(main_render, sidebar_render, io)
 
 
