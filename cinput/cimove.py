@@ -15,9 +15,14 @@ def move_comm(delta):
         return False
     return move
 
-commands = {'y' : move_comm(Point(0, -1)), 'n' : move_comm(Point(0, 1)),
-            'g' : move_comm(Point(-1, 0)), 'j' : move_comm(Point(1, 0)),
-            'q' : (lambda a,b: True) }
+rect_commands = {'y' : move_comm(Point(0, -1)), 'n' : move_comm(Point(0, 1)),
+                'g' : move_comm(Point(-1, 0)), 'j' : move_comm(Point(1, 0)),
+                'q' : (lambda a,b: True) }
+
+hex_commands = {'y' : move_comm(Point(-1, -1)), 'u' : move_comm(Point(1, -1)),
+                'h' : move_comm(Point(-2, 0)), 'j' : move_comm(Point(2, 0)),
+                'n' : move_comm(Point(-1, 1)), 'm' : move_comm(Point(1, 1)),
+                'q' : (lambda a,b: True) }
 
 def go(player, area):
     ''' Prompt for player input and respond accordingly.
@@ -27,6 +32,7 @@ def go(player, area):
         area (Area): The area the character inhabits.
     '''
     command = getch()
+    commands = hex_commands
     if command in commands:
         should_quit = commands[command](player, area)
         return should_quit

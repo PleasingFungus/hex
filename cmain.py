@@ -12,9 +12,9 @@ from point import Point
 
 def main(scr):
     ''' Run the game. '''
-    area = Area(Area.gen_room(20))
-    area.cells[Point(10, 10)] = CL_FLOOR()
-    player = area.cells[Point(10, 10)].actor = Actor()
+    area = Area(Area.gen_hex_room(20))
+    area.cells[Point(11, 10)] = CL_FLOOR()
+    player = area.cells[Point(11, 10)].actor = Actor()
 
     while True:
         render_area(area, scr)

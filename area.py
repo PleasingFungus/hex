@@ -50,7 +50,7 @@ class Area(object):
         return None
 
     @classmethod
-    def gen_room(cls, dim):
+    def gen_rect_room(cls, dim):
         ''' Generate a completely random room of the given dimensions, starting from the origin.
         
         Args:
@@ -61,6 +61,29 @@ class Area(object):
         cells = {}
         for x in range(dim):
             for y in range(dim):
+                if x == 0 or y == 0 or x == dim - 1 or y == dim - 1:
+                    cells[Point(x,y)] = CL_WALL()
+                else:
+                    cells[Point(x,y)] = choice([CL_FLOOR, CL_WALL])()
+
+        return cells
+
+    @classmethod
+    def gen_hex_room(cls, dim):
+        ''' Generate a completely random room of the given dimensions, starting from the origin.
+            Room is set up for a hex game; rows have alternating blank spaces.
+
+        Args:
+            dim (int): The number of rows & columns to generate. The actual room will be twice as wide.
+        Returns:
+            dict<Point, Cell>: A set of random cells in the given dimensions.
+        '''
+        cells = {}
+        for x in range(dim * 2):
+            for y in range(dim):
+                if x % 2 == y % 2:
+                    continue
+
                 if x == 0 or y == 0 or x == dim - 1 or y == dim - 1:
                     cells[Point(x,y)] = CL_WALL()
                 else:
