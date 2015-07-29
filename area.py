@@ -1,6 +1,6 @@
 ''' Modelling game areas. '''
 
-from cell import CL_FLOOR, CL_WALL
+from cell import CL_FLOOR, CL_WALL, CL_STAIR
 from point import Point
 from rand import random2, choice
 
@@ -65,5 +65,7 @@ class Area(object):
                     cells[Point(x,y)] = CL_WALL()
                 else:
                     cells[Point(x,y)] = CL_FLOOR()
+
+        cells[Point(int(dim/2), 1)] = CL_STAIR()
 
         return cells
