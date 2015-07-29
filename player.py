@@ -22,7 +22,7 @@ class Player(Actor):
             return
 
         # leave a trail
+        assert cur_loc in area.cells
         old_cell = area.cells[cur_loc]
-        assert old_cell != None
         assert old_cell.actor == None
         old_cell.actor = Actor('~')
