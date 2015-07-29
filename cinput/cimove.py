@@ -9,7 +9,7 @@ def move_comm(x, y):
         x (int): The x-movement in question. (E.g., 1 to move right)
         y (int): The y-movement in question. (E.g., -1 to move up)
     Returns:
-        function: A function that tries to move the player in the corresponding direction.
+        function<Player, Area>: A function that tries to move the player in the corresponding direction.
     '''
     delta = Point(x, y)
     def move(player, area):
