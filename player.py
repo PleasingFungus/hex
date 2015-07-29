@@ -13,6 +13,7 @@ class Player(Actor):
         super().__init__('@', crender.colors.EMERALD)
         self.is_player = True
         self.alive = True
+        self.is_mobile = True
 
     def be_hit(self, other):
         ''' Be brutally battered.

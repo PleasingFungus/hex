@@ -7,6 +7,7 @@ class Mongoose(Actor):
     ''' A simple melee enemy. '''
     def __init__(self):
         super().__init__('o', RUST)
+        self.is_mobile = True
 
     def act(self, area):
         ''' Take a turn.
