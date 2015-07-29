@@ -2,6 +2,8 @@
 
 # TODO: move loc into actors instead, to preserve 1 loc per actor invariant
 
+import crender.colors
+
 class Cell(object):
     '''A terrain cell.
     
@@ -11,9 +13,10 @@ class Cell(object):
         actor (Actor): the actor currently occupying the cell; may be None.
         is_stairs (bool): whether the player can walk down this tile to the next level.
     '''
-    def __init__(self, glyph, solid):
-        self.glyph = glyph
+    def __init__(self, solid, glyph, color=crender.colors.COL_WHITE):
         self.solid = solid
+        self.glyph = glyph
+        self.color = color
         self.actor = None
         self.is_stairs = False
 
@@ -23,6 +26,13 @@ class Cell(object):
             (str): The glyph for the current actor in the cell, if any, or the glyph for the cell otherwise.
         '''
         return self.actor.cur_glyph() if self.actor else self.glyph
+
+    def cur_color(self):
+        ''' Get the current console color for the cell.
+        Returns:
+            (str): The color for the current actor in the cell, if any, or the color for the cell otherwise.
+        '''
+        return self.actor.cur_color() if self.actor else self.color
 
     def is_full(self):
         ''' Is the cell currently full (un-enterable)?
@@ -34,9 +44,9 @@ class Cell(object):
 class Stairs(Cell):
     ''' A set of stairs leading to the next level. '''
     def __init__(self):
-        super().__init__('>', False)
+        super().__init__(False, '>', crender.colors.COL_YELLOW)
         self.is_stairs = True
 
-CL_FLOOR = lambda: Cell('.', False)
-CL_WALL = lambda: Cell('#', True)
+CL_FLOOR = lambda: Cell(False, '.')
+CL_WALL = lambda: Cell(True, '#')
 CL_STAIR = Stairs

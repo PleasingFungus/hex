@@ -1,19 +1,30 @@
 ''' Actor class & methods. '''
 
+import crender.colors
+
 class Actor(object):
     ''' An entity that occupies a Cell.
         Attributes:
             glyph (str): The glyph used to represent the actor in console; e.g. '@'.
+            color (int): The color pair used for the console glyph; defaults to 0 (white).
     '''
-    def __init__(self, glyph):
+    def __init__(self, glyph, color=crender.colors.COL_WHITE):
         self.glyph = glyph
+        self.color = color
 
     def cur_glyph(self):
         ''' What glyph should currently be used to represent this actor in the console?
         Returns:
-            The correct glyph for the actor; e.g. '@'.
+            str: The correct glyph for the actor; e.g. '@'.
         '''
         return self.glyph
+
+    def cur_color(self):
+        ''' What color should currently be used for this actor's glyph in the console?
+        Returns:
+            int: The correct color pair for the actor; e.g. 0 (white).
+        '''
+        return self.color
 
     def attempt_move(self, delta, area):
         ''' Attempt to move the actor the given delta from their current position in the current area.
