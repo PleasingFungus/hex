@@ -51,12 +51,12 @@ class Area(object):
 
     @classmethod
     def gen_room(cls, dim):
-        ''' Generate a completely random room of the given dimensions, starting from the origin.
+        ''' Generate a completely hollow room of the given dimensions, starting from the origin.
         
         Args:
             dim (int): The number of rows & columns to generate.
         Returns:
-            dict<Point, Cell>: A set of random cells completely filling the given dimensions.
+            dict<Point, Cell>: A set of cells completely filling the given dimensions.
         '''
         cells = {}
         for x in range(dim):
@@ -64,6 +64,6 @@ class Area(object):
                 if x == 0 or y == 0 or x == dim - 1 or y == dim - 1:
                     cells[Point(x,y)] = CL_WALL()
                 else:
-                    cells[Point(x,y)] = choice([CL_FLOOR, CL_WALL])()
+                    cells[Point(x,y)] = CL_FLOOR()
 
         return cells
