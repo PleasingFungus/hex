@@ -49,3 +49,7 @@ class Point(object):
 
         return (other.x == self.x and abs(other.y - self.y) == 1
              or other.y == self.y and abs(other.x - self.x) == 1)
+
+    def abs(self):
+        ''' The absolute distance from the origin. '''
+        return abs(self.x) + abs(self.y)
