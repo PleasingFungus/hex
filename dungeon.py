@@ -4,7 +4,7 @@ from astar import a_star_search
 from cell import CL_FLOOR, CL_WALL, CL_STAIR
 from mongoose import Mongoose
 from point import Point
-from rand import random2, choice
+from rand import random_choose_weighted, choice
 
 def new_level(player, player_loc, depth, dim):
     ''' Generate a new level.
@@ -43,7 +43,7 @@ def new_level(player, player_loc, depth, dim):
     raise RuntimeError("Couldn't generate a valid level!")
 
 def gen_room(dim):
-    ''' Generate a completely hollow room of the given dimensions, starting from the origin.
+    ''' Generate a largely hollow room of the given dimensions, starting from the origin.
     
     Args:
         dim (int): The number of rows & columns to generate.
@@ -56,7 +56,7 @@ def gen_room(dim):
             if x == 0 or y == 0 or x == dim - 1 or y == dim - 1:
                 cells[Point(x,y)] = CL_WALL()
             else:
-                cells[Point(x,y)] = CL_FLOOR()
+                cells[Point(x,y)] = random_choose_weighted((9, CL_FLOOR), (1, CL_WALL))()
 
     return cells
 
