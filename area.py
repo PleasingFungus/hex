@@ -1,8 +1,6 @@
 ''' Modelling game areas. '''
 
-from cell import CL_FLOOR, CL_WALL, CL_STAIR
 from point import Point
-from rand import random2, choice
 
 class Area(object):
     '''A set of terrain cells.
@@ -67,24 +65,3 @@ class Area(object):
         players = [a for a in self.all_actors() if a.is_player]
         assert len(players) == 1
         return players[0]
-
-    @classmethod
-    def gen_room(cls, dim):
-        ''' Generate a completely hollow room of the given dimensions, starting from the origin.
-        
-        Args:
-            dim (int): The number of rows & columns to generate.
-        Returns:
-            dict<Point, Cell>: A set of cells completely filling the given dimensions.
-        '''
-        cells = {}
-        for x in range(dim):
-            for y in range(dim):
-                if x == 0 or y == 0 or x == dim - 1 or y == dim - 1:
-                    cells[Point(x,y)] = CL_WALL()
-                else:
-                    cells[Point(x,y)] = CL_FLOOR()
-
-        cells[Point(int(dim/2), 1)] = CL_STAIR()
-
-        return cells
