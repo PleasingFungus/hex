@@ -58,6 +58,16 @@ class Area(object):
         '''
         return [cell.actor for cell in self.cells.values() if cell.actor]
 
+    def get_player(self):
+        ''' Find the player.
+        Asserts that there is one and exactly one player present.
+        Returns:
+            Player: An actor in the area that has is_player set.
+        '''
+        players = [a for a in self.all_actors() if a.is_player]
+        assert len(players) == 1
+        return players[0]
+
     @classmethod
     def gen_room(cls, dim):
         ''' Generate a completely hollow room of the given dimensions, starting from the origin.

@@ -9,12 +9,14 @@ class Actor(object):
             color (Color): The color pair used for the console glyph; defaults to white.
             is_player (bool): Whether the actor is the player.
             is_mobile (bool): Whether this actor can move.
+            is_hittable (bool): Whether the player can hit this actor.
     '''
     def __init__(self, glyph, color=crender.colors.WHITE):
         self.glyph = glyph
         self.color = color
         self.is_player = False
         self.is_mobile = False
+        self.is_hittable = False
 
     def cur_glyph(self):
         ''' What glyph should currently be used to represent this actor in the console?
