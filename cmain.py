@@ -1,10 +1,10 @@
 ''' The console-based launcher for the game. '''
 
+import curses
 import logging
 
 from cinput.cimove import go
 from crender.crarea import render_area, render_sidebar
-import curses
 from snake import run_game
 from quit import QuitException
 
@@ -22,6 +22,8 @@ def main(scr):
     # FIXME: this displays black until the player provides input (???)
         # only true if querying 'scr'; however, querying others doesn't get arrow presses
     io = lambda player,area: go(scr.getkey(), player, area)
+
+    curses.ungetch('~') # hack to 'fix' the above ^
 
     run_game(main_render, sidebar_render, io)
 
