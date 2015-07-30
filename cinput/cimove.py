@@ -2,6 +2,7 @@
 
 from getch import getch
 from point import Point
+from quit import QuitException
 
 def move_comm(x, y):
     ''' Generate a movement command for the corresponding delta.
@@ -13,14 +14,17 @@ def move_comm(x, y):
     '''
     delta = Point(x, y)
     def move(player, area):
-        return (player.attempt_move(delta, area), False)
+        return player.attempt_move(delta, area)
     return move
+
+def quit(_, __):
+    raise QuitException
 
 commands = {'y' : move_comm(0, -1), 'n' : move_comm(0, 1),
             'h' : move_comm(-1, 0), 'j' : move_comm(1, 0),
             'KEY_UP' : move_comm(0, -1), 'KEY_DOWN' : move_comm(0, 1),
             'KEY_LEFT' : move_comm(-1, 0), 'KEY_RIGHT' : move_comm(1, 0),
-            'q' : (lambda _,__: (False, True)), 'd' : (lambda player,_: (player.die(), False)) }
+            'q' : quit, 'd' : (lambda player,_: player.die()) }
 
 def go(command, player, area):
     ''' Respond appropriately to player input.
@@ -30,12 +34,12 @@ def go(command, player, area):
         player (Actor): The character the player controls.
         area (Area): The area the character inhabits.
     Returns:
-        tuple<bool, bool>: Whether the command took time, and whether the game should exit.
+        bool: Whether the command took time.
     '''
     if not player.alive:
-        return (False, True) # quit without responding to input
+        raise QuitException # quit without responding to input
 
     if command in commands:
-        took_time, should_quit = commands[command](player, area)
-        return (took_time, should_quit)
-    return (False, False)
+        took_time = commands[command](player, area)
+        return took_time
+    return False # unbound commands take no time

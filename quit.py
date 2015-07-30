@@ -1,2 +1,4 @@
+''' An exception used to implement quitting. '''
+
 class QuitException(Exception):
-    pass # TODO: use me instead of the tuple return in io()!
+    pass

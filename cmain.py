@@ -6,6 +6,7 @@ from cinput.cimove import go
 from crender.crarea import render_area, render_sidebar
 import curses
 from snake import run_game
+from quit import QuitException
 
 def main(scr):
     ''' Run the game. '''
@@ -28,4 +29,7 @@ def main(scr):
 
 if __name__ == '__main__':
     logging.getLogger().setLevel(logging.DEBUG)
-    curses.wrapper(main)
+    try:
+        curses.wrapper(main)
+    except QuitException:
+        print("Have a nice day!")

@@ -27,10 +27,7 @@ def run_game(main_render, sidebar_render, io):
     while True:
         main_render(area)
         sidebar_render(player, area)
-        time_taken, should_quit = io(player, area)
-
-        if should_quit:
-            break
+        time_taken = io(player, area)
 
         if not time_taken:
             continue
