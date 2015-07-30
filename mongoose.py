@@ -11,14 +11,15 @@ class Mongoose(Actor):
         self.is_mobile = True
         self.is_hittable = True
 
-    def act(self, area):
+    def act(self, area, history):
         ''' Take a turn.
         Args:
             area (Area): The area the mongoose is in.
+            history (list<str>): The log.
         '''
 
         self.move_toward_player(area)
-        if not self.hit_player(area):
+        if not self.hit_player(area, history):
             self.move_toward_player(area)
 
     def move_toward_player(self, area):
@@ -37,15 +38,17 @@ class Mongoose(Actor):
         # attempt to move toward the player
         path = a_star_search(area.cells, cur_loc, player_loc)
         if path:
-            self.attempt_move(path[0] - cur_loc, area)
+            fake_log = [] # swallow logging XXX dubious
+            self.attempt_move(path[0] - cur_loc, area, fake_log)
             return
 
         # XXX: just move directly toward the player
 
-    def hit_player(self, area):
+    def hit_player(self, area, history):
         ''' Attempt to hit the player, if they're adjacent.
         Args:
             area (Area): The area the mongoose is in.
+            history (list<str>): The log.
         Returns:
             Whether the player was in range to be hit.
         '''
@@ -59,7 +62,8 @@ class Mongoose(Actor):
 
         # attempt to hit the player
         if player_loc.adjacent(cur_loc):
-            player.be_hit(self)
+            history.append("The mongoose hits you!")
+            player.be_hit(self, history)
             return True
         return False
 

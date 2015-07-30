@@ -16,19 +16,26 @@ class Player(Actor):
         self.is_mobile = True
         self.is_hittable = True # dubious
 
-    def be_hit(self, other):
+    def be_hit(self, other, history):
         ''' Be brutally battered.
         Args:
             other (Actor): The entity doing the damage.
+            history (list<str>): The log.
         '''
-        self.die()
+        self.die(history)
 
-    def die(self):
-        ''' Be no longer alive. '''
+    def die(self, history):
+        ''' Be no longer alive.
+        Args:
+            history (list<str>): The log.
+        '''
+
+        history.append("You die...")
         self.alive = False
         # XXX: would be good to clear the input buffer here, or in things that call this
+            # once we start properly buffering...
 
-    def attempt_move(self, delta, area):
+    def attempt_move(self, delta, area, history):
         ''' Attempt to move in the given direction.
         If there's an enemy there, hit it.
         If the move is successful, leave a trail behind.
@@ -36,6 +43,7 @@ class Player(Actor):
         Params:
             delta (Point): The delta to move from the actor's current position.
             area (Area): The area the actor is in.
+            history (list<str>): The log.
         Returns:
             Whether the player actually took time. (By moving and/or hitting.)
         '''
@@ -45,10 +53,10 @@ class Player(Actor):
         assert cur_loc != None
 
         # check to see whether there's an enemy to murder
-        did_hit = self.attempt_hit(delta, area)
+        did_hit = self.attempt_hit(delta, area, history)
 
         # actually try to move
-        moved = super().attempt_move(delta, area)
+        moved = super().attempt_move(delta, area, history)
         if not moved:
             return did_hit # still take time if you hit but didn't kill (this probably shouldn't happen?)
 
@@ -59,11 +67,12 @@ class Player(Actor):
         old_cell.actor = Actor('~', crender.colors.EMERALD)
         return True
 
-    def attempt_hit(self, delta, area):
+    def attempt_hit(self, delta, area, history):
         ''' Attempt to bite whatever's in the given direction.
         Params:
             delta (Point): The delta to move from the actor's current position.
             area (Area): The area the actor is in.
+            history (list<str>): The log.
         Returns:
             Whether the player actually hit anything.
         '''
@@ -79,5 +88,6 @@ class Player(Actor):
         if not target_cell.actor or not target_cell.actor.is_hittable:
             return False # nothing to be hit
 
+        history.append("You devour the mongoose!")
         target_cell.actor = None # XXX: this is killing the actor but will probably need to be generalized at some point
         return True

@@ -32,10 +32,23 @@ def render_sidebar(player, area, scr):
     '''
     scr.clear()
 
-    if not player.alive:
-        scr.addstr(0, 0, "You died!")
-        scr.refresh()
-        return
-
     scr.addstr(0, 0, "Depth: {}".format(area.depth))
+    if not player.alive:
+        scr.addstr(1, 0, " R I P ")
+
     scr.refresh()
+
+def render_log(history, scr):
+    ''' Render the log to the console.
+    Args:
+        history (list<str>): The log.
+        scr: The curses screen to be rendered to.
+    '''
+    scr.clear()
+
+    height, _ = scr.getmaxyx()
+    for i, line in enumerate(history[-height:]):
+        scr.addstr(i, 0, line)
+
+    scr.refresh()
+

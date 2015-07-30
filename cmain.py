@@ -4,7 +4,7 @@ import curses
 import logging
 
 from cinput.cimove import go
-from crender.crarea import render_area, render_sidebar
+from crender.crarea import render_area, render_sidebar, render_log
 from snake import run_game
 from quit import QuitException
 
@@ -14,18 +14,22 @@ def main(scr):
 
     sidebar_width = 12
     main_width = curses.COLS - sidebar_width
-    sidebar_window = curses.newwin(curses.LINES, sidebar_width, 0, 0)
-    main_window = curses.newwin(curses.LINES, main_width, 0, sidebar_width) 
+    log_height = 5
+    main_height = curses.LINES - log_height
+    sidebar_window = curses.newwin(main_height, sidebar_width, 0, 0)
+    main_window = curses.newwin(main_height, main_width, 0, sidebar_width)
+    log_window = curses.newwin(log_height, curses.COLS, main_height, 0)
 
     main_render = lambda area: render_area(area, main_window)
     sidebar_render = lambda player,area: render_sidebar(player, area, sidebar_window)
+    log_render = lambda history: render_log(history, log_window)
     # FIXME: this displays black until the player provides input (???)
         # only true if querying 'scr'; however, querying others doesn't get arrow presses
-    io = lambda player,area: go(scr.getkey(), player, area)
+    io = lambda player,area,history: go(scr.getkey(), player, area, history)
 
     curses.ungetch('~') # hack to 'fix' the above ^
 
-    run_game(main_render, sidebar_render, io)
+    run_game(main_render, sidebar_render, log_render, io)
 
 
 

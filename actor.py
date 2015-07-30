@@ -32,19 +32,21 @@ class Actor(object):
         '''
         return self.color
 
-    def act(self, area):
+    def act(self, area, history):
         ''' Take a turn.
         args:
             area (Area): The area the actor is in.
+            history (list<str>): The log.
         '''
         pass
 
-    def attempt_move(self, delta, area):
+    def attempt_move(self, delta, area, history):
         ''' Attempt to move the actor the given delta from their current position in the current area.
 
         Args:
             delta (Point): The delta to move from the actor's current position.
             area (Area): The area the actor is in.
+            history (list<str>): The log.
         Returns:
             bool: Whether the actor successfully moved.
         '''
