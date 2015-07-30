@@ -12,6 +12,7 @@ def random2(x):
 
 def random_choose_weighted(*options):
     ''' Choose a random option from a weighted list.
+    Adapted from crawl's implementation: https://github.com/crawl/crawl/commit/5c15e6abda97c .
     Args:
         options (list<tuple<int, object>>): A list of weights and corresponding objects.
         The chance of any given item being chosen is its weight / the sum of all item weights.
