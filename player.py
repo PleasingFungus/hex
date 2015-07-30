@@ -41,10 +41,11 @@ class Player(Actor):
 
         moved = super().attempt_move(delta, area)
         if not moved:
-            return
+            return False
 
         # leave a trail
         assert cur_loc in area.cells
         old_cell = area.cells[cur_loc]
         assert old_cell.actor == None
         old_cell.actor = Actor('~', crender.colors.EMERALD)
+        return True

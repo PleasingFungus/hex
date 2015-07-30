@@ -27,9 +27,13 @@ def run_game(main_render, sidebar_render, io):
     while True:
         main_render(area)
         sidebar_render(player, area)
-        should_quit = io(player, area)
+        time_taken, should_quit = io(player, area)
+
         if should_quit:
             break
+
+        if not time_taken:
+            continue
 
         check_stairs(player, area)
         for actor in area.all_actors():

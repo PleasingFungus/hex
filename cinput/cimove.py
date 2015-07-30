@@ -13,15 +13,14 @@ def move_comm(x, y):
     '''
     delta = Point(x, y)
     def move(player, area):
-        player.attempt_move(delta, area)
-        return False
+        return (player.attempt_move(delta, area), False)
     return move
 
 commands = {'y' : move_comm(0, -1), 'n' : move_comm(0, 1),
             'h' : move_comm(-1, 0), 'j' : move_comm(1, 0),
             'KEY_UP' : move_comm(0, -1), 'KEY_DOWN' : move_comm(0, 1),
             'KEY_LEFT' : move_comm(-1, 0), 'KEY_RIGHT' : move_comm(1, 0),
-            'q' : (lambda a,b: True), 'd' : (lambda player,_: player.die()) }
+            'q' : (lambda _,__: (False, True)), 'd' : (lambda player,_: (player.die(), False)) }
 
 def go(command, player, area):
     ''' Respond appropriately to player input.
@@ -30,11 +29,13 @@ def go(command, player, area):
         command (str): The command in question.
         player (Actor): The character the player controls.
         area (Area): The area the character inhabits.
+    Returns:
+        tuple<bool, bool>: Whether the command took time, and whether the game should exit.
     '''
     if not player.alive:
-        return True # quit without responding to input
+        return (False, True) # quit without responding to input
 
     if command in commands:
-        should_quit = commands[command](player, area)
-        return should_quit
-    return False
+        took_time, should_quit = commands[command](player, area)
+        return (took_time, should_quit)
+    return (False, False)
