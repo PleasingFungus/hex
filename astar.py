@@ -29,7 +29,7 @@ def a_star_search(cells, start, goal):
 
         if cells[current].solid:
             continue # don't path through walls
-        if cells[current].actor and not cells[current].actor.is_mobile:
+        if cells[current].actor and not cells[current].actor.is_mobile():
             continue # don't path through fixed creatures
         
         neighbors = [loc for loc in cells if loc.adjacent(current)] # inefficient

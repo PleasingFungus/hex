@@ -14,7 +14,11 @@ def render_area(area, scr):
 
 def debug_astar(area, scr):
     player = [actor for actor in area.all_actors() if actor.is_player()][0]
-    mongoose = [actor for actor in area.all_actors() if actor.glyph == 'o'][0]
+    mongoosen = [actor for actor in area.all_actors() if actor.cur_glyph() == 'o']
+    if not mongoosen:
+        return
+
+    mongoose = mongoosen[0]
     mongoose_loc = area.find_actor(mongoose)
     player_loc = area.find_actor(player)
     from astar import a_star_search
