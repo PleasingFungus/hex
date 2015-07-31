@@ -94,6 +94,9 @@ class Player(Actor):
             return False # nothing to be hit
 
         history.append("You devour {}!".format(target_cell.actor.get_the_name()))
+        if target_cell.actor._id == 'tail': #XXX: figure out a better way to do this than a literal string comparison
+            history[-1] += " (Ouch!)"
+            self.be_hit(self, history)
         target_cell.actor = None # XXX: this is killing the actor but will probably need to be generalized at some point
         return True
 
