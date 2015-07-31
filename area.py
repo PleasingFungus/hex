@@ -62,6 +62,6 @@ class Area(object):
         Returns:
             Player: An actor in the area that has is_player set.
         '''
-        players = [a for a in self.all_actors() if a.is_player]
+        players = [a for a in self.all_actors() if a.is_player()]
         assert len(players) == 1
         return players[0]

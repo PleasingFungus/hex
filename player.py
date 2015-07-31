@@ -12,11 +12,12 @@ class Player(Actor):
     '''
 
     def __init__(self):
-        super().__init__('@')
-        self.is_player = True
-        self.is_mobile = True
-        self.is_hittable = True # dubious
+        super().__init__("player", None)
         self.health = MAX_HP
+
+    def is_player(self):
+        """ This actor is controlled by the player. """
+        return True
 
     def be_hit(self, other, history):
         ''' Be brutally battered.
@@ -68,7 +69,7 @@ class Player(Actor):
         assert cur_loc in area.cells
         old_cell = area.cells[cur_loc]
         assert old_cell.actor == None
-        old_cell.actor = Actor('~', self.cur_color())
+        old_cell.actor = Actor('tail', self.cur_color())
         return True
 
     def attempt_hit(self, delta, area, history):
@@ -89,10 +90,10 @@ class Player(Actor):
             return False # can't hit outside the map!
 
         target_cell = area.cells[target]
-        if not target_cell.actor or not target_cell.actor.is_hittable:
+        if not target_cell.actor:
             return False # nothing to be hit
 
-        history.append("You devour the mongoose!")
+        history.append("You devour {}!".format(target_cell.actor.get_the_name()))
         target_cell.actor = None # XXX: this is killing the actor but will probably need to be generalized at some point
         return True
 

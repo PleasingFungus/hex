@@ -13,7 +13,7 @@ def render_area(area, scr):
     scr.refresh()
 
 def debug_astar(area, scr):
-    player = [actor for actor in area.all_actors() if actor.is_player][0]
+    player = [actor for actor in area.all_actors() if actor.is_player()][0]
     mongoose = [actor for actor in area.all_actors() if actor.glyph == 'o'][0]
     mongoose_loc = area.find_actor(mongoose)
     player_loc = area.find_actor(player)

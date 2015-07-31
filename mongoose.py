@@ -7,9 +7,7 @@ from crender.colors import RUST
 class Mongoose(Actor):
     ''' A simple melee enemy. '''
     def __init__(self):
-        super().__init__('o', RUST)
-        self.is_mobile = True
-        self.is_hittable = True
+        super().__init__('mongoose', RUST)
 
     def act(self, area, history):
         ''' Take a turn.

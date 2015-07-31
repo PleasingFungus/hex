@@ -1,0 +1,17 @@
+{
+    "player" : {
+        "mobile" : true,
+        "glyph" : "@",
+        "the_name" : "you"
+    },
+    "tail" : {
+        "mobile" : false,
+        "glyph" : "~",
+        "the_name" : "your tail"
+    },
+    "mongoose" : {
+        "mobile" : true,
+        "glyph" : "o",
+        "the_name" : "the mongoose"
+    }
+}
