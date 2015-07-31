@@ -37,7 +37,7 @@ def go(command, player, area, history):
     Returns:
         bool: Whether the command took time.
     '''
-    if not player.alive:
+    if not player.is_alive():
         raise QuitException # quit without responding to input
 
     if command in commands:

@@ -56,3 +56,6 @@ def check_stairs(player, area, history):
     area.cells = new_level(player, loc, area.depth, level_dim)
     history.append("Welcome to level {}!".format(area.depth))
 
+    # give the player a little health back
+    player.heal(1)
+

@@ -33,7 +33,7 @@ def render_sidebar(player, area, scr):
     scr.clear()
 
     scr.addstr(0, 0, "Depth: {}".format(area.depth))
-    if not player.alive:
+    if not player.is_alive():
         scr.addstr(1, 0, " R I P ")
 
     scr.refresh()

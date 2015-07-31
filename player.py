@@ -3,18 +3,20 @@
 from actor import Actor
 import crender.colors
 
+MAX_HP = 3
+
 class Player(Actor):
     ''' The player character class.
     Attributes:
-        alive (bool): Whether the player is alive or is dead (in the process of dying).
+        health (int): The player's current HP; 0 implies dead.
     '''
 
     def __init__(self):
-        super().__init__('@', crender.colors.EMERALD)
+        super().__init__('@')
         self.is_player = True
-        self.alive = True
         self.is_mobile = True
         self.is_hittable = True # dubious
+        self.health = MAX_HP
 
     def be_hit(self, other, history):
         ''' Be brutally battered.
@@ -22,7 +24,9 @@ class Player(Actor):
             other (Actor): The entity doing the damage.
             history (list<str>): The log.
         '''
-        self.die(history)
+        self.health -= 1
+        if not self.is_alive():
+            self.die(history)
 
     def die(self, history):
         ''' Be no longer alive.
@@ -30,8 +34,8 @@ class Player(Actor):
             history (list<str>): The log.
         '''
 
+        self.health = 0
         history.append("You die...")
-        self.alive = False
         # XXX: would be good to clear the input buffer here, or in things that call this
             # once we start properly buffering...
 
@@ -64,7 +68,7 @@ class Player(Actor):
         assert cur_loc in area.cells
         old_cell = area.cells[cur_loc]
         assert old_cell.actor == None
-        old_cell.actor = Actor('~', crender.colors.EMERALD)
+        old_cell.actor = Actor('~', self.cur_color())
         return True
 
     def attempt_hit(self, delta, area, history):
@@ -91,3 +95,28 @@ class Player(Actor):
         history.append("You devour the mongoose!")
         target_cell.actor = None # XXX: this is killing the actor but will probably need to be generalized at some point
         return True
+
+    def is_alive(self):
+        return self.health > 0
+
+    def cur_color(self):
+        """ What color is the player at present?
+        Returns:
+            Color: A color corresponding to the player's health.
+        """
+        colors = {
+            3 : crender.colors.EMERALD,
+            2 : crender.colors.YELLOW,
+            1 : crender.colors.RED,
+            0 : crender.colors.RUST
+        }
+
+        return colors.get(self.health, crender.colors.MAGENTA)
+
+    def heal(self, amount):
+        ''' (Partially) restore the player's HP, up to the max.
+        Args:
+            amount (int): The # of HP to restore.
+        '''
+
+        self.health = min(self.health + amount, MAX_HP)
