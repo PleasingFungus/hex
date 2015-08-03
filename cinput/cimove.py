@@ -2,6 +2,7 @@
 
 from functools import partial
 
+from cinput.cijump import prompt_jump, handle_jump_input
 from getch import getch
 from point import Point
 
@@ -22,9 +23,10 @@ commands = {'y' : move_comm(0, -1), 'n' : move_comm(0, 1),
             'h' : move_comm(-1, 0), 'j' : move_comm(1, 0),
             'KEY_UP' : move_comm(0, -1), 'KEY_DOWN' : move_comm(0, 1),
             'KEY_LEFT' : move_comm(-1, 0), 'KEY_RIGHT' : move_comm(1, 0),
-            'd' : (lambda player,_,history: player.die(history)) }
+            'd' : (lambda player,_,history: player.die(history)),
+            'a' : prompt_jump }
 
-state_changes = { 'q' : None }
+state_changes = { 'q' : None, 'a' : handle_jump_input }
 
 def nil_command(*_):
     return False

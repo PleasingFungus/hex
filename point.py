@@ -56,3 +56,9 @@ class Point(object):
     def abs(self):
         ''' The absolute distance from the origin. '''
         return abs(self.x) + abs(self.y)
+
+    def scaled(self, length):
+        ''' Return a version of this point (as a vector) with the provided length.
+        Expect integer rounding errors. '''
+        cur_len = self.abs()
+        return Point(int(self.x * length / cur_len), int(self.y * length / cur_len))
