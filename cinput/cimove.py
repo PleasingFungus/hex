@@ -1,8 +1,9 @@
 ''' Basic player input command functionality. '''
 
+from functools import partial
+
 from getch import getch
 from point import Point
-from quit import QuitException
 
 def move_comm(x, y):
     ''' Generate a movement command for the corresponding delta.
@@ -17,30 +18,40 @@ def move_comm(x, y):
         return player.attempt_move(delta, area, history)
     return move
 
-def quit(_, __,___):
-    raise QuitException
-
 commands = {'y' : move_comm(0, -1), 'n' : move_comm(0, 1),
             'h' : move_comm(-1, 0), 'j' : move_comm(1, 0),
             'KEY_UP' : move_comm(0, -1), 'KEY_DOWN' : move_comm(0, 1),
             'KEY_LEFT' : move_comm(-1, 0), 'KEY_RIGHT' : move_comm(1, 0),
-            'q' : quit, 'd' : (lambda player,_,history: player.die(history)) }
+            'd' : (lambda player,_,history: player.die(history)) }
 
-def handle_move_input(command, player, area, history):
+state_changes = { 'q' : None }
+
+def nil_command(*_):
+    return False
+
+for key in state_changes:
+    if key not in commands:
+        commands[key] = nil_command
+
+def handle_move_input(getkey, player, area, history):
     ''' Respond appropriately to player input.
     
     Args:
-        command (str): The command in question.
+        getkey (function<:str>): Fetches a single keypress of player input.
         player (Actor): The character the player controls.
         area (Area): The area the character inhabits.
         history (list<str>): The log.
     Returns:
-        bool: Whether the command took time.
+        tuple<bool, function<Player, Area, list<str> : tuple<...>>>: Whether the command took time, and a function to call for next input.
+        The function may be None, in which case the game should terminate.
     '''
+    command = getkey()
     if not player.is_alive():
-        raise QuitException # quit without responding to input
+        return False, None # quit without responding to player input
 
+    next_state = partial(handle_move_input, getkey)
     if command in commands:
         took_time = commands[command](player, area, history)
-        return took_time
-    return False # unbound commands take no time
+        next_state = partial(state_changes[command], getkey) if state_changes.get(command) else state_changes.get(command, next_state)
+        return took_time, next_state
+    return False, next_state # unbound commands take no time

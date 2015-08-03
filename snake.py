@@ -26,7 +26,9 @@ def run_game(main_render, sidebar_render, log_render, io):
         sidebar_render(player, area)
         log_render(history)
 
-        time_taken = io(player, area, history)
+        time_taken, io = io(player, area, history)
+        if not io:
+            return
         if not time_taken:
             continue
 
