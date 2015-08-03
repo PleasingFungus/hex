@@ -3,7 +3,7 @@
 import curses
 import logging
 
-from cinput.cimove import go
+from cinput.cimove import handle_move_input
 from crender.crarea import render_area, render_sidebar, render_log
 from snake import run_game
 from quit import QuitException
@@ -25,12 +25,22 @@ def main(scr):
     log_render = lambda history: render_log(history, log_window)
     # FIXME: this displays black until the player provides input (???)
         # only true if querying 'scr'; however, querying others doesn't get arrow presses
-    io = lambda player,area,history: go(scr.getkey(), player, area, history)
+    io = make_io(scr, handle_move_input)
 
     curses.ungetch('~') # hack to 'fix' the above ^
 
     run_game(main_render, sidebar_render, log_render, io)
 
+def make_io(scr, iofunc):
+    ''' Take a function and wrap it for use by the main game loop.
+    Args:
+        scr: A curses screen to be queried for input.
+        iofunc (function<str, Player, Area, list<str> : bool>): A function that takes input and transforms it into game state changes.
+    Returns:
+        function<Player, Area, list<str> : bool>: The wrapped function without the 'command' argument.
+    '''
+
+    return (lambda player, area, history: iofunc(scr.getkey(), player, area, history))
 
 
 if __name__ == '__main__':

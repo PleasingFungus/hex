@@ -26,7 +26,7 @@ commands = {'y' : move_comm(0, -1), 'n' : move_comm(0, 1),
             'KEY_LEFT' : move_comm(-1, 0), 'KEY_RIGHT' : move_comm(1, 0),
             'q' : quit, 'd' : (lambda player,_,history: player.die(history)) }
 
-def go(command, player, area, history):
+def handle_move_input(command, player, area, history):
     ''' Respond appropriately to player input.
     
     Args:
