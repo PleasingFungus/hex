@@ -40,6 +40,8 @@ def render_sidebar(player, area, scr):
     if not player.is_alive():
         scr.addstr(1, 0, " R I P ")
 
+    # TODO: display player abilities, commands, cooldowns
+
     scr.refresh()
 
 def render_log(history, scr):
