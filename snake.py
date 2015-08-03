@@ -4,16 +4,14 @@ from area import Area
 from dungeon import new_level
 from player import Player
 from point import Point
+from vcstate import VCWrapper
 
 level_dim = 19
 
-def run_game(main_render, sidebar_render, log_render, io):
+def run_game(vcstate):
     ''' The main game loop.
         Params:
-            main_render (function<Area>): Render the current game state to the screen.
-            sidebar_render (function<Player, Area>): Render metadata to the sidebar.
-            log_render (function<list<str>>): Render history data to the player.
-            io (function<Player, Area>): Query the player for their next action.
+            vcstate: An object that handles rendering & IO.
     '''
     halfwidth = int(level_dim / 2)
     midpoint = Point(halfwidth, halfwidth)
@@ -21,18 +19,18 @@ def run_game(main_render, sidebar_render, log_render, io):
     area = Area(new_level(player, midpoint, 1, level_dim))
     history = ['']
 
-    while True:
-        main_render(area)
-        sidebar_render(player, area)
-        log_render(history)
+    vcwrapper = VCWrapper(vcstate)
 
-        # TODO: support varying rendering by io state (for e.g. abil prompts)
-        time_taken, io = io(player, area, history)
-        if not io:
+    while True:
+        # render & check IO
+        time_taken = vcwrapper.run(player, area, history)
+
+        if vcwrapper.done():
             return
         if not time_taken:
             continue
 
+        # run the rest of the simulation
         check_stairs(player, area, history)
         for actor in area.all_actors():
             actor.act(area, history)

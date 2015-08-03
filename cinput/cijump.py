@@ -1,7 +1,6 @@
 ''' Let the player select a jump target or cancel. '''
 
-from functools import partial
-
+from cinput.vcstate import VCState
 from jump import attempt_jump
 from point import Point
 
@@ -22,27 +21,29 @@ directions = {'y' : Point(0, -1), 'n' : Point(0, 1),
               'KEY_UP' : Point(0, -1), 'KEY_DOWN' : Point(0, 1),
               'KEY_LEFT' : Point(-1, 0), 'KEY_RIGHT' : Point(1, 0)}
 
-def handle_jump_input(getkey, player, area, history):
+def handle_jump_input(command, player, area, history):
     ''' Prompt for input and either select a jump location (and jump there) or abort.
     
     Args:
-        getkey (function<str>): A function to fetch a single character of player input.
+        command (str): A single keypress of player input.
         player (Actor): The character the player controls.
         area (Area): The area the character inhabits.
         history (list<str>): The log.
     Returns:
-        tuple<bool, function<Player, Area, list<str> : tuple<...>>>: Whether the command took time, and a function to call for next input.
-        The function may be None, in which case the game should terminate.
+        tuple<bool, class>: Whether the action took time, and the next input/rendering state to enter.
+        The state may be None, in which case the game should terminate.
     '''
-    command = getkey()
-
-    from cinput.cimove import handle_move_input # do this here to avoid a loop
+    from cinput.cimove import MoveInputHandler # do this here to avoid a loop
 
     if command not in directions: # if some random key was pressed
         history.append("Okay, then.")
-        return False, partial(handle_move_input, getkey) # abort selection (don't take time)
+        return False, MoveInputHandler # abort selection (don't take time)
 
     jumped = attempt_jump(directions[command], player, area, history)
     if not jumped:
-        return False, partial(handle_jump_input, getkey) # try again if the player prompted an invalid direction
-    return True, partial(handle_move_input, getkey)
+        return False, JumpInputHandler # try again if the player prompted an invalid direction
+    return True, MoveInputHandler
+
+class JumpInputHandler(VCState):
+    def __init__(self, getkey, windows):
+        super().__init__(getkey, windows, handle_jump_input)

@@ -3,8 +3,7 @@
 import curses
 import logging
 
-from cinput.cimove import handle_move_input
-from crender.crarea import render_area, render_sidebar, render_log
+from cinput.cimove import MoveInputHandler
 from crender.cwindows import ConsoleWindows
 from snake import run_game
 
@@ -13,17 +12,13 @@ def main(scr):
     curses.curs_set(0)
 
     windows = ConsoleWindows()
+    io = MoveInputHandler(scr.getkey, windows)
 
-    main_render = lambda area: render_area(area, windows.main)
-    sidebar_render = lambda player,area: render_sidebar(player, area, windows.sidebar)
-    log_render = lambda history: render_log(history, windows.log)
-    # FIXME: this displays black until the player provides input (???)
-        # only true if querying 'scr'; however, querying others doesn't get arrow presses
-    io = lambda player, area, history: handle_move_input(scr.getkey, player, area, history)
+    # FIXME: using multiple windows displays black until the player provides input (???)
+        # only true if querying 'scr' for getkey(); however, querying others doesn't get arrow presses
+    curses.ungetch('~') # hack to 'fix' the above ^ (assumes ~ won't be bound to any function)
 
-    curses.ungetch('~') # hack to 'fix' the above ^
-
-    run_game(main_render, sidebar_render, log_render, io)
+    run_game(io)
 
 
 if __name__ == '__main__':
