@@ -34,6 +34,7 @@ def run_game(vcstate):
         check_stairs(player, area, history)
         for actor in area.all_actors():
             actor.act(area, history)
+            # XXX: don't let actors randomly block each-other based on invisible ordering
 
 def check_stairs(player, area, history):
     ''' Check if the player is on the stairs.
