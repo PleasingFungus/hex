@@ -49,7 +49,7 @@ def handle_move_input(command, player, area, history):
     if not player.is_alive():
         return False, None # quit without responding to player input
 
-    abilities = [ConsoleAbility(abil.idstr) for abil in player.abilities]
+    abilities = [ConsoleAbility(abil) for abil in player.abilities]
 
     commands = basic_commands.copy()
     commands.update({a.hotkey() : a.on_activate() for a in abilities})

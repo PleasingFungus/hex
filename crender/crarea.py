@@ -44,7 +44,7 @@ def render_sidebar(player, area, scr):
 
     from cinput.ciabil import ConsoleAbility
     for i, abil in enumerate(player.abilities):
-        abil_str = "{}-{}".format(ConsoleAbility(abil.idstr).hotkey(), abil.name())
+        abil_str = "{}-{}".format(ConsoleAbility(abil).hotkey(), abil.name())
         if abil.cooldown > 0:
             abil_str += " ({})".format(abil.cooldown)
         color = colors.WHITE if abil.cooldown <= 0 else colors.RUST
