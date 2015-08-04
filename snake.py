@@ -7,13 +7,10 @@ from point import Point
 
 level_dim = 19
 
-def run_game(main_render, sidebar_render, log_render, io):
+def run_game(vcstate):
     ''' The main game loop.
         Params:
-            main_render (function<Area>): Render the current game state to the screen.
-            sidebar_render (function<Player, Area>): Render metadata to the sidebar.
-            log_render (function<list<str>>): Render history data to the player.
-            io (function<Player, Area>): Query the player for their next action.
+            vcstate (VCState): An object that handles rendering & IO.
     '''
     halfwidth = int(level_dim / 2)
     midpoint = Point(halfwidth, halfwidth)
@@ -22,13 +19,10 @@ def run_game(main_render, sidebar_render, log_render, io):
     history = ['']
 
     while True:
-        main_render(area)
-        sidebar_render(player, area)
-        log_render(history)
+        vcstate.render(player, area, history)
+        time_taken = vcstate.handle_io(player, area, history)
 
-        # TODO: support varying rendering by io state (for e.g. abil prompts)
-        time_taken, io = io(player, area, history)
-        if not io:
+        if vcstate.done():
             return
         if not time_taken:
             continue
