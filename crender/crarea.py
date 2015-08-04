@@ -40,7 +40,10 @@ def render_sidebar(player, area, scr):
     if not player.is_alive():
         scr.addstr(1, 0, " R I P ")
 
-    # TODO: display player abilities, commands, cooldowns
+    from cinput.ciabil import ConsoleAbility
+    for i, abil in enumerate(player.abilities):
+        abil_str = "{}: {}".format(ConsoleAbility(abil.idstr).hotkey(), abil.name())
+        scr.addstr(i + 3, 1, abil_str)
 
     scr.refresh()
 
