@@ -35,6 +35,8 @@ def run_game(vcstate):
         for actor in area.all_actors():
             actor.act(area, history)
             # XXX: don't let actors randomly block each-other based on invisible ordering
+        for abil in player.abilities:
+            abil.cooldown = max(0, abil.cooldown - 1)
 
 def check_stairs(player, area, history):
     ''' Check if the player is on the stairs.

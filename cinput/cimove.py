@@ -53,6 +53,7 @@ def handle_move_input(command, player, area, history):
 
     commands = basic_commands.copy()
     commands.update({a.hotkey() : a.on_activate() for a in abilities})
+    # TODO: respect cooldowns
 
     next_state = MoveInputHandler
     state_changes = basic_state_changes.copy()

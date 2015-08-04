@@ -127,3 +127,16 @@ class Player(Actor):
         '''
 
         self.health = min(self.health + amount, MAX_HP)
+
+    def get_abil(self, idstr):
+        ''' Fetch the ability object with the given identifying string.
+        Args:
+            idstr (str): The ID of the ability to lookup.
+        Returns:
+            Ability: The player's instance of the ability, or None if the player doesn't have one.
+        '''
+        # XXX: this could be abstracted further
+        for abil in self.abilities:
+            if abil.idstr == idstr:
+                return abil
+        return None

@@ -1,6 +1,9 @@
 ''' Let the player jump, or try. '''
 
+from ability import ABIL_JUMP
+
 JUMP_RANGE = 2
+JUMP_COOLDOWN = 3
 
 def attempt_jump(direction, player, area, history):
     ''' Attempt to 'jump' the player in the given direction.
@@ -32,6 +35,7 @@ def attempt_jump(direction, player, area, history):
 
     success = player.attempt_move(delta, area, history)
     assert success
+    player.get_abil(ABIL_JUMP).cooldown = JUMP_COOLDOWN
     return True
 
 def valid_jump_destination(cell):

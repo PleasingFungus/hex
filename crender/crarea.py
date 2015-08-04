@@ -1,5 +1,7 @@
 ''' Functions for rendering an area to the console.'''
 
+from crender import colors
+
 def render_area(area, scr):
     ''' Render a given Area to the console.
     
@@ -42,8 +44,11 @@ def render_sidebar(player, area, scr):
 
     from cinput.ciabil import ConsoleAbility
     for i, abil in enumerate(player.abilities):
-        abil_str = "{}: {}".format(ConsoleAbility(abil.idstr).hotkey(), abil.name())
-        scr.addstr(i + 3, 1, abil_str)
+        abil_str = "{}-{}".format(ConsoleAbility(abil.idstr).hotkey(), abil.name())
+        if abil.cooldown > 0:
+            abil_str += " ({})".format(abil.cooldown)
+        color = colors.WHITE if abil.cooldown <= 0 else colors.RUST
+        scr.addstr(i + 3, 0, abil_str, color.attribute_code() )
 
     scr.refresh()
 
