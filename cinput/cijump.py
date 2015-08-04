@@ -42,7 +42,7 @@ def handle_jump_input(command, player, area, history):
 
     jumped = attempt_jump(directions[command], player, area, history)
     if not jumped:
-        return False, JumpInputHandler # try again if the player prompted an invalid direction
+        return False, MoveInputHandler
     return True, MoveInputHandler
 
 class JumpInputHandler(VCState):
