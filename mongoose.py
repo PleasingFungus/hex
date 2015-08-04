@@ -35,6 +35,7 @@ class Mongoose(Actor):
 
         # attempt to move toward the player
         path = a_star_search(area.cells, cur_loc, player_loc)
+        # TODO: improve performance when the player is unreachable
         if path:
             fake_log = [] # swallow logging XXX dubious
             self.attempt_move(path[0] - cur_loc, area, fake_log)
