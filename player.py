@@ -1,5 +1,6 @@
 ''' Basic player character functionality. '''
 
+from ability import Ability, ABIL_JUMP
 from actor import Actor
 import crender.colors
 
@@ -9,11 +10,13 @@ class Player(Actor):
     ''' The player character class.
     Attributes:
         health (int): The player's current HP; 0 implies dead.
+        abilities (list<Ability>): A list of the player's current abilities & their state.
     '''
 
     def __init__(self):
         super().__init__("player", None)
         self.health = MAX_HP
+        self.abilities = [Ability(ABIL_JUMP)]
 
     def is_player(self):
         """ This actor is controlled by the player. """
