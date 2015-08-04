@@ -1,6 +1,7 @@
 ''' Let the player select a jump target or cancel. '''
 
 from cinput.vcstate import VCState
+from crender.crjump import render_jump_targets
 from jump import attempt_jump
 from point import Point
 
@@ -47,3 +48,11 @@ def handle_jump_input(command, player, area, history):
 class JumpInputHandler(VCState):
     def __init__(self, getkey, windows):
         super().__init__(getkey, windows, handle_jump_input)
+
+    def main_render(self, area):
+        ''' Render the game map, characters, etc.
+        Args:
+            area (Area): The game map (cells)
+        '''
+        super().main_render(area)
+        render_jump_targets(area, self.windows.main)

@@ -20,14 +20,34 @@ def attempt_jump(direction, player, area, history):
     assert player_loc
 
     target_loc = player_loc + delta
-    target_tile = area.cells.get(target_loc)
-    if not target_tile:
+    target_cell = area.cells.get(target_loc)
+    if not target_cell:
         return False # can't jump outside the map!
 
-    if target_tile.is_full():
+    if target_cell.is_full():
         history.append("There's already something there!")
         return False
+
+    assert valid_jump_destination(target_cell)
 
     success = player.attempt_move(delta, area, history)
     assert success
     return True
+
+def valid_jump_destination(cell):
+    ''' Diregarding distance from the player, is the given
+    cell a valid target?
+    Args:
+        cell (Cell): The cell in question.
+    Returns:
+        bool: Whether the cell can be jumped into.
+    '''
+
+    if not cell:
+        return False # can't jump outside the map!
+
+    if cell.is_full():
+        return False # can't jump into an occupied cell!
+
+    return True
+
