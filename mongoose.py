@@ -33,12 +33,19 @@ class Mongoose(Actor):
         cur_loc = area.find_actor(self)
         assert cur_loc != None
 
+        def passable_metric(cell):
+            ''' Can the cell be pathed through? '''
+            if cell.solid:
+                return False # don't path through walls
+            if cell.actor and not cell.actor.is_mobile():
+                return False # don't path through fixed creatures
+            return True
+
         # attempt to move toward the player
-        path = a_star_search(area.cells, cur_loc, player_loc)
+        path = a_star_search(area.cells, cur_loc, player_loc, passable_metric)
         # TODO: improve performance when the player is unreachable
         if path:
-            fake_log = [] # swallow logging XXX dubious
-            self.attempt_move(path[0] - cur_loc, area, fake_log)
+            self.attempt_move(path[0] - cur_loc, area, None)
             return
 
         # XXX: just move directly toward the player

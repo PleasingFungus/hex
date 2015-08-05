@@ -1,6 +1,7 @@
 ''' a simple melee enemy. '''
 
 from actor import Actor
+from astar import a_star_search
 from crender.colors import PURPLE
 from point import Point
 from rand import coinflip
@@ -25,6 +26,7 @@ class Ghost(Actor):
         Args:
             area (Area): The area the ghost is in.
         '''
+        # TODO: deduplicate with mongoose code
         
         player = area.get_player()
         player_loc = area.find_actor(player)
@@ -33,15 +35,17 @@ class Ghost(Actor):
         cur_loc = area.find_actor(self)
         assert cur_loc != None
 
-        delta = player_loc - cur_loc
-        h_delta = Point(int(delta.x / abs(delta.x)) if delta.x else 0, 0)
-        v_delta = Point(0, int(delta.y / abs(delta.y)) if delta.y else 0)
-        if abs(delta.x) > abs(delta.y) or (abs(delta.x) == abs(delta.y) and coinflip()):
-            return self.attempt_move(h_delta, area, None) or self.attempt_move(v_delta, area, None)
-        else:
-            return self.attempt_move(v_delta, area, None) or self.attempt_move(h_delta, area, None)
+        def passable_metric(cell):
+            ''' Can the cell be pathed through? '''
+            if cell.actor and not cell.actor.is_mobile():
+                return False # don't path through fixed creatures
+            return True
 
-        # TODO: switch over to a* but with a different obstruction metric
+        # attempt to move toward the player
+        path = a_star_search(area.cells, cur_loc, player_loc, passable_metric)
+        # TODO: improve performance when the player is unreachable
+        if path:
+            return self.attempt_move(path[0] - cur_loc, area, None)
 
     def valid_move_destination(self, cell):
         ''' Can this actor move into the given cell?

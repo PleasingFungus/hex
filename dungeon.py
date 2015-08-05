@@ -35,7 +35,7 @@ def new_level(player, player_loc, depth, dim):
         add_enemies(player, player_loc, cells, depth)
 
         # sanity check
-        path = a_star_search(cells, player_loc, stairs_loc)
+        path = a_star_search(cells, player_loc, stairs_loc, lambda cell: not cell.solid)
         if path:
             return cells
         # otherwise, generate a new level
@@ -82,7 +82,7 @@ def add_enemies(player, player_loc, cells, depth):
             if cell.is_full():
                 continue
             # also discard those which can't get to the player, or which are too close
-            to_player = a_star_search(cells, loc, player_loc)
+            to_player = a_star_search(cells, loc, player_loc, lambda cell: not cell.solid)
             if not to_player or len(to_player) < 4:
                 continue
 

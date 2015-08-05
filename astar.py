@@ -2,7 +2,7 @@
 
 from queue import PriorityQueue
 
-def a_star_search(cells, start, goal):
+def a_star_search(cells, start, goal, passable_metric):
     ''' Find the fastest path from the start to the goal in the given area.
     A slightly modified version of http://www.redblobgames.com/pathfinding/a-star/implementation.html .
 
@@ -10,6 +10,7 @@ def a_star_search(cells, start, goal):
         cells (dict<Point, Cell>): A map of points (locations) to cells.
         start (Point): The starting point of the search.
         goal (Point): The intended destination of the search.
+        passable_metric (function<Cell:bool>): A function returning True iff a cell can be pathed through.
     Returns:
         An ordered list of points to travel to reach the goal.
         Includes the goal, but does not include the start.
@@ -27,10 +28,8 @@ def a_star_search(cells, start, goal):
         if current == goal:
             break
 
-        if cells[current].solid:
-            continue # don't path through walls
-        if cells[current].actor and not cells[current].actor.is_mobile():
-            continue # don't path through fixed creatures
+        if not passable_metric(cells[current]):
+            continue # don't path through impassable cells!
         
         neighbors = [loc for loc in cells if loc.adjacent(current)] # inefficient
         for next_loc in neighbors:
