@@ -2,6 +2,7 @@
 
 import curses
 import logging
+from random import seed
 
 from cinput.cimove import MoveInputHandler
 from crender.cwindows import ConsoleWindows
@@ -22,6 +23,10 @@ def main(scr):
 
 
 if __name__ == '__main__':
+    import sys
+    if len(sys.argv) > 1:
+        seed(int(sys.argv[1]))
+
     logging.getLogger().setLevel(logging.DEBUG)
     curses.wrapper(main)
     print("Have a nice day!")
