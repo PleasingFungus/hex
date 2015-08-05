@@ -13,5 +13,10 @@
         "mobile" : true,
         "glyph" : "o",
         "the_name" : "the mongoose"
+    },
+    "ghost" : {
+        "mobile" : true,
+        "glyph" : "g",
+        "the_name" : "the ghost"
     }
 }

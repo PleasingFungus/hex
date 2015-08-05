@@ -26,3 +26,7 @@ def random_choose_weighted(*options):
         if seen_weight > r:
             return option
     return None
+
+def coinflip():
+    ''' A one in two chance. '''
+    return choice((True, False))

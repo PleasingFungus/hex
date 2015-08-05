@@ -74,7 +74,7 @@ class Actor(object):
             return False
 
         new_cell = area.cells[new_loc]
-        if new_cell.is_full(): # solid or occupied
+        if not self.valid_move_destination(new_cell):
             return False
 
         # let's move!
@@ -83,6 +83,15 @@ class Actor(object):
         cur_cell.actor = None
         new_cell.actor = self
         return True
+
+    def valid_move_destination(self, cell):
+        ''' Can this actor move into the given cell?
+        Args:
+            cell (Cell): The map cell in question.
+        Returns:
+            bool: Whether this actor can move into this cell, ignoring distance.
+        '''
+        return not cell.is_full()
 
 def validate(actor_data):
     ''' Check to make sure that the data actually matches our schema. '''

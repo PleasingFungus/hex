@@ -2,6 +2,7 @@
 
 from astar import a_star_search
 from cell import CL_FLOOR, CL_WALL, CL_STAIR
+from ghost import Ghost
 from mongoose import Mongoose
 from point import Point
 from rand import random_choose_weighted, choice
@@ -86,5 +87,5 @@ def add_enemies(player, player_loc, cells, depth):
                 continue
 
             # actually place an enemy
-            cell.actor = Mongoose()
+            cell.actor = Ghost()
             break
