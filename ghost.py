@@ -9,7 +9,6 @@ class Ghost(Actor):
     ''' A simple melee enemy. '''
     def __init__(self):
         super().__init__('ghost', PURPLE)
-        # TODO: add a white background when they're on solid terrain
 
     def act(self, area, history):
         ''' Take a turn.

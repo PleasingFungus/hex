@@ -33,7 +33,14 @@ class Cell(object):
         Returns:
             (Color): The color for the current actor in the cell, if any, or the color for the cell otherwise.
         '''
-        return self.actor.cur_color() if self.actor else self.color
+        if not self.actor:
+            return self.color
+
+        color = self.actor.cur_color()
+        if not self.solid:
+            return color
+
+        return crender.colors.Color(color.bright, color.fg, crender.colors.WHITE.fg)
 
     def is_full(self):
         ''' Is the cell currently full (un-enterable)?
