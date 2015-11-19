@@ -1,5 +1,7 @@
 ''' Main snake game running processes. '''
 
+import time
+
 from area import Area
 from dungeon import new_level
 from player import Player
@@ -40,9 +42,24 @@ def run_game(vcstate):
             move_to_new_level(player, area, history)
             continue
 
+        to_act = area.all_actors()
+        while to_act:
+            waiting_actors = []
+            for actor in to_act:
+                actor_done = actor.act(area, history)
+                if not actor_done:
+                    waiting_actors.append(actor)
+
+            if waiting_actors == to_act:
+                break
+            to_act = waiting_actors
+
+            if to_act:
+                vcwrapper.vcstate.render(player, area, history)
+                time.sleep(0.1)
+
         for actor in area.all_actors():
-            actor.act(area, history)
-            # XXX: don't let actors randomly block each-other based on invisible ordering
+            actor.end_of_turn_cleanup()
 
 def on_stairs(player, area):
     ''' Is the player is on the stairs to the next level?

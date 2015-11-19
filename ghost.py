@@ -16,15 +16,21 @@ class Ghost(Actor):
         Args:
             area (Area): The area the ghost is in.
             history (list<str>): The log.
+        Returns:
+            bool: Whether the ghost is done for the turn (True), or whether it wants to take more
+                  actions (False).
         '''
 
-        if not self.move_toward_player(area):
-            self.hit_player(area, history)
+        if self.hit_player(area, history):
+            return True
+        return self.move_toward_player(area)
 
     def move_toward_player(self, area):
         ''' Attempt to move toward the player.
         Args:
             area (Area): The area the ghost is in.
+        Returns:
+            bool: whether the ghost successfully moved.
         '''
         # TODO: deduplicate with mongoose code
         
@@ -46,6 +52,7 @@ class Ghost(Actor):
         # TODO: improve performance when the player is unreachable
         if path:
             return self.attempt_move(path[0] - cur_loc, area, None)
+        return False
 
     def valid_move_destination(self, cell):
         ''' Can this actor move into the given cell?

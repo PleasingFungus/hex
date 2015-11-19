@@ -8,3 +8,10 @@
 # geysers - intermittently blow up in a point (or an area?)
 # mud - takes two turns to move through
 # fruit
+
+# TODO:
+# g.
+# g@
+# ^ let the top ghost move right here, rather than being blocked by the other ghost
+# taking the first path (how?)
+

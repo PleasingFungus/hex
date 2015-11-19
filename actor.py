@@ -49,11 +49,14 @@ class Actor(object):
 
     def act(self, area, history):
         ''' Take a turn.
-        args:
+        Args:
             area (Area): The area the actor is in.
             history (list<str>): The log.
+        Returns:
+            bool: Whether the actor is done for the turn (True), or whether it wants to take more
+                  actions (False).
         '''
-        pass
+        return True
 
     def attempt_move(self, delta, area, history):
         ''' Attempt to move the actor the given delta from their current position in the current area.
@@ -92,6 +95,10 @@ class Actor(object):
             bool: Whether this actor can move into this cell, ignoring distance.
         '''
         return not cell.is_full()
+
+    def end_of_turn_cleanup(self):
+        ''' Perform any necessary cleanup at the end of a full turn. '''
+        pass
 
 def validate(actor_data):
     ''' Check to make sure that the data actually matches our schema. '''

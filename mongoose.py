@@ -4,26 +4,40 @@ from actor import Actor
 from astar import a_star_search
 from crender.colors import RUST
 
+MOVES_PER_TURN = 2
+
 class Mongoose(Actor):
     ''' A simple melee enemy. '''
     def __init__(self):
         super().__init__('mongoose', RUST)
+        self.moves_taken = 0
 
     def act(self, area, history):
         ''' Take a turn.
         Args:
             area (Area): The area the mongoose is in.
             history (list<str>): The log.
+        Returns:
+            bool: Whether the mongoose is done for the turn (True),
+                  or whether it wants to take more actions (False).
         '''
 
-        self.move_toward_player(area)
-        if not self.hit_player(area, history):
-            self.move_toward_player(area)
+        if self.hit_player(area, history):
+            return True
+
+        moved = self.move_toward_player(area)
+        if not moved:
+            return False
+
+        self.moves_taken += 1
+        return self.moves_taken >= MOVES_PER_TURN
 
     def move_toward_player(self, area):
         ''' Attempt to move toward the player.
         Args:
             area (Area): The area the mongoose is in.
+        Returns:
+            bool: Whether the mongoose moved.
         '''
         
         player = area.get_player()
@@ -46,7 +60,8 @@ class Mongoose(Actor):
         # TODO: improve performance when the player is unreachable
         if path:
             self.attempt_move(path[0] - cur_loc, area, None)
-            return
+            return True
+        return False
 
         # XXX: just move directly toward the player
 
@@ -73,3 +88,6 @@ class Mongoose(Actor):
             return True
         return False
 
+    def end_of_turn_cleanup(self):
+        ''' Reset moves_taken at EOT. '''
+        self.moves_taken = 0
