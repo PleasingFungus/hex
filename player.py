@@ -124,9 +124,13 @@ class Player(Actor):
         ''' (Partially) restore the player's HP, up to the max.
         Args:
             amount (int): The # of HP to restore.
+        Returns:
+            bool: Whether the healing accomplished anything.
         '''
 
+        old_health = self.health
         self.health = min(self.health + amount, MAX_HP)
+        return old_health < self.health
 
     def get_abil(self, idstr):
         ''' Fetch the ability object with the given identifying string.

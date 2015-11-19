@@ -23,6 +23,7 @@ def run_game(vcstate):
 
     while True:
         # render & check IO
+        vcwrapper.vcstate.render(player, area, history)
         time_taken = vcwrapper.run(player, area, history)
 
         if vcwrapper.done():
@@ -30,21 +31,26 @@ def run_game(vcstate):
         if not time_taken:
             continue
 
-        # run the rest of the simulation
-        check_stairs(player, area, history)
-        for actor in area.all_actors():
-            actor.act(area, history)
-            # XXX: don't let actors randomly block each-other based on invisible ordering
+        # cooldowns
         for abil in player.abilities:
             abil.cooldown = max(0, abil.cooldown - 1)
 
-def check_stairs(player, area, history):
-    ''' Check if the player is on the stairs.
-        If so, generate a new level.
+        # run the rest of the simulation
+        if on_stairs(player, area):
+            move_to_new_level(player, area, history)
+            continue
+
+        for actor in area.all_actors():
+            actor.act(area, history)
+            # XXX: don't let actors randomly block each-other based on invisible ordering
+
+def on_stairs(player, area):
+    ''' Is the player is on the stairs to the next level?
         Args:
             player (Player): The character controlled by the player.
             area (Area): The current level.
-            history (list<str>): The log.
+        Returns:
+            bool: Whether the player is on the stairs.
     '''
 
     loc = area.find_actor(player)
@@ -52,14 +58,25 @@ def check_stairs(player, area, history):
     assert loc in area.cells
 
     cell = area.cells[loc]
-    if not cell.is_stairs:
-        return
+    return cell.is_stairs
 
-    # on the stairs; new level.
+def move_to_new_level(player, area, history):
+    ''' Handle the player moving to a new level.
+        Args:
+            player (Player): The character controlled by the player.
+            area (Area): The current level.
+            history (list<str>): The log.
+    '''
+    loc = area.find_actor(player)
+    assert loc != None
+    assert loc in area.cells
+
     area.depth += 1
     area.cells = new_level(player, loc, area.depth, level_dim)
     history.append("Welcome to level {}!".format(area.depth))
 
     # give the player a little health back
-    player.heal(1)
+    healed = player.heal(1)
+    if healed:
+        history[-1] += " You feel a little better."
 

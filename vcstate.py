@@ -8,14 +8,13 @@ class VCWrapper(object):
         self.vcstate = vcstate
 
     def run(self, player, area, history):
-        ''' Render, prompt for input, and handle the immediate results.
+        ''' Prompt for input, and handle the immediate results.
         Args:
             player (Player): The character controlled by the player.
             area (Area): The game map (cells).
             history (list<str>): The log.
         '''
 
-        self.vcstate.render(player, area, history)
         time_taken, vcstate = self.vcstate.handle_io(player, area, history)
         self.vcstate = vcstate
         return time_taken
